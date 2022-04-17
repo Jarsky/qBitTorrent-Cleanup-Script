@@ -29,7 +29,7 @@ if [[ ! " ${array[*]} " =~ " ${value} " ]]; then
                 echo "[INFO] $torrentPath/$i/ will be deleted"
                 rm -rf $torrentPath/$i/
                 else
-                echo "[WARN] $torrentPath/$i/ will be deleted (TEST)"
+                echo "[WARN] $torrentPath/$i/ will be deleted (TEST :: DELETE MANUALLY)"
                 fi
         done
 fi
