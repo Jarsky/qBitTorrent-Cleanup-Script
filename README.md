@@ -10,7 +10,7 @@ Many torrent releases on private trackers are still in a .rar archive. For autom
 
 <code>unrar x "%F/*.r*" "%F/"</code>
 
-When using a cleanup to automatically remove torrents, wether that be natively in qBitTorrent or using a script such as autoremove-torrents the UnRAR'd file and subsequently the sub folder are not removed.
+When using a cleanup to automatically remove torrents, wether that be natively in [qBitTorrent](https://www.qbittorrent.org) or using a script such as [autoremove-torrents](https://github.com/jerrymakesjelly/autoremove-torrents) the UnRAR'd file and subsequently the sub folder are not removed.
 
 If you're using other tools such as Sonarr, Radarr, Lidarr, etc...which automatically copy your files, and the extracted files are left in a temporary location then this isnt ideal.
 
