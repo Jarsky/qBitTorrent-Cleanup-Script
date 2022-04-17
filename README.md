@@ -38,5 +38,6 @@ e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron 
   * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh  
 </blockquote>
 <br />
-*** The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file ***
+**The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file**
 <br />
+## NOTE: No action will be taken unless you set "deleteFiles="true" 
