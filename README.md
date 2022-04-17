@@ -30,14 +30,13 @@ Usage
 3. Set your paths in the configuration
 4. Setup a cronjob to automate this script
 <br />
-e.g to set the cronjob as root<br />
-<code>sudo crontab -e<code><br />
+e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron entry
 <br />
 <br />
-<pre>
+```
 #qBitTorrent Cleanup CRON Job
 * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh
-</pre>
+```
 <br />
 ### The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file
 <br />
