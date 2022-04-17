@@ -35,9 +35,12 @@ function fDependencies() {
                         echo -e "${YEL}You are missing moreutils which will break the script${NC}\n"
                         echo -e "${YEL}You must run as ${RED}sudo${YEL} for first run e.g sudo ${BASH_SOURCE[0]}${NC}\n"
                         exit 0
-
                         fi
                         apt-get -y install moreutils
+                        echo ""
+                        echo -e "${GRN}You can now start the script normally using ${BASH_SOURCE[0]}${NC}\n"
+                        echo ""
+                        exit 0
 
         elif [ $OS = "CentOS" ] && [ yum -q list installed moreutils &>/dev/null && echo "Error" ]; then
                         if [ "$EUID" -ne 0 ]; then
@@ -46,11 +49,10 @@ function fDependencies() {
                         exit 0
                         fi
                         yum -y install moreutils
-
-        echo ""
-        echo -e "${GRN}You can now start the script normally using ${BASH_SOURCE[0]}${NC}\n"
-        echo ""
-        exit 0
+                        echo ""
+                        echo -e "${GRN}You can now start the script normally using ${BASH_SOURCE[0]}${NC}\n"
+                        echo ""
+                        exit 0
         fi
 }
 
