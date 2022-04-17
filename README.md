@@ -30,9 +30,9 @@ Usage
 3. Set your paths in the configuration
 4. Setup a cronjob to automate this script
 
-e.g to set the cronjob as root
+e.g to set the cronjob as root<br />
 <code>sudo crontab -e<code>
-<code># Cleanup Files not deleted by autoremove-torrents
-  * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh</code>
+<br />
+<code>  * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh </code>
   
 **Note your user will need access to read the qBitTorrent logs and write to the Cleanup log.**
