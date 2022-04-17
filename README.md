@@ -33,6 +33,8 @@ Usage
 e.g to set the cronjob as root<br />
 <code>sudo crontab -e<code>
 <br />
-<code>  * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh </code>
-  
-**Note your user will need access to read the qBitTorrent logs and write to the Cleanup log.**
+```
+  #qBitTorrent Cleanup CRON Job
+  * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh 
+```
+ 
