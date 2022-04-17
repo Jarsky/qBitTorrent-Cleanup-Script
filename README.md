@@ -6,19 +6,13 @@ Script to cleanup unrar'd files after torrent automatically removed
 Overview
 -------------
 
-Many torrent releases on private trackers are still in a .rar archive.<br />
-For automation these need to be extracted. In qBitTorrent this can be done <br />
-by using the external program with a command such as:<br />
+Many torrent releases on private trackers are still in a .rar archive. For automation these need to be extracted. In qBitTorrent this can be done by using the external program with a command such as:
 
 <code>unrar x "%F/*.r*" "%F/"</code>
 
-When using a cleanup to automatically remove torrents, wether that be<br />
-natively in qBitTorrent or using a script such as autoremove-torrents<br />
-the UnRAR'd file and subsequently the sub folder are not removed.<br />
+When using a cleanup to automatically remove torrents, wether that be natively in qBitTorrent or using a script such as autoremove-torrents the UnRAR'd file and subsequently the sub folder are not removed.
 
-If you're using other tools such as Sonarr, Radarr, Lidarr, etc...which<br />
-automatically copy your files, and the extracted files are left in a<br />
-temporary location then this isnt ideal.<br />
+If you're using other tools such as Sonarr, Radarr, Lidarr, etc...which automatically copy your files, and the extracted files are left in a temporary location then this isnt ideal.
 
 This script will scrub the qBitTorrent log and delete leftover files.
 
@@ -45,8 +39,6 @@ e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron 
 Known Issues
 ---------------
 
-If you have run the script in Test mode, no files will be deleted that<br />
-have existing log entries. You will have to delete these manually<br />
-or delete the log file and run again in delete mode.
+If you have run the script in Test mode, no files will be deleted that have existing log entries. You will have to delete these manually or delete the log file and run again in delete mode.
 
 Delete qBittorrent-Cleanup.log and change deleteFiles="true"
