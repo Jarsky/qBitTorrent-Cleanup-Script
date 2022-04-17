@@ -29,12 +29,15 @@ Usage
 2. Install TS (apt install moreutils)
 3. Set your paths in the configuration
 4. Setup a cronjob to automate this script
-
-e.g to set the cronjob as root<br />
-<code>sudo crontab -e<code>
 <br />
-```
-  #qBitTorrent Cleanup CRON Job
-  * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh 
-```
- 
+e.g to set the cronjob as root<br />
+<code>sudo crontab -e<code><br />
+<br />
+<br />
+<pre>
+#qBitTorrent Cleanup CRON Job
+* 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh
+</pre>
+<br />
+### The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file
+<br />
