@@ -41,3 +41,12 @@ e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron 
 **The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file**
 <br />
 ## NOTE: No action will be taken unless you set "deleteFiles="true" 
+
+Known Issues
+---------------
+
+If you have run the script in Test mode, no files will be deleted that<br />
+have existing log entries. You will have to delete these manually<br />
+or delete the log file and run again in delete mode.
+
+Delete qBittorrent-Cleanup.log and change deleteFiles="true"
