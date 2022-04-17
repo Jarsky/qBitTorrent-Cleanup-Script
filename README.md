@@ -32,10 +32,11 @@ Usage
 <br />
 e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron entry
 <br /><br />
-<code>
-#qBitTorrent Cleanup CRON Job<br />
-* 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh
-</code>
-<br /><br />
-### The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file
+<blockquote>
+  #qBitTorrent Cleanup CRON Job  
+  <br>
+  * 1 * * * /path/to/scripts/qBitTorrent-Cleanup.sh  
+</blockquote>
+<br />
+*** The CRON user will need Read access to the qBitTorrent logs, and write to the Cleanup script log file ***
 <br />
