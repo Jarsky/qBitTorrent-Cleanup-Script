@@ -2,7 +2,7 @@
 
 #Config
 deleteFiles="false"
-torrentPath=/path/to/my/files
+torrentPath=/path/to/downloads
 qBitTorrentLogPath=/opt/appdata/qbittorrent/config/qBittorrent/logs
 LogPath=/var/log/qBitTorrent-Cleanup.log
 dependencyCheck="true"
@@ -70,26 +70,34 @@ fi
 dateFormat="%Y-%m-%dT%H:%M:%S"
 exec 1>> >(ts '['$dateFormat']' >> "$LogPath") 2>&1
 files=`cat $qBitTorrentLogPath/qbittorrent.log | grep "Error: Directory not empty" | awk '{ print $4 }' | tr -s "\'" ' '`
-exists=`cat $LogPath | grep "will be deleted" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
 array=($files)
-value=($exists)
 
-#if [[ " ${array[*]} " =~ " ${value} " ]]; then
-#    for i in "${array[@]}"
-#        do
-#                echo "[INFO] $torrentPath/$i/ was already deleted"
-#        done
-#fi
+doesntexist=`cat $LogPath | grep "doesnt exist" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
+deletedFile=($doesntexist)
 
-if [[ ! " ${array[*]} " =~ " ${value} " ]]; then
-
-    for i in "${array[@]}"
+for i in "${array[@]}";
         do
                 if [ $deleteFiles = "true" ]; then
-                echo "[INFO] $torrentPath/$i/ will be deleted"
-                rm -rf $torrentPath/$i/
+                        if [ -d "$torrentPath/$i" ]; then
+                                echo "[INFO] $torrentPath/$i/ will be deleted"
+                                deleted=`strace rm -r $torrentPath/$i/ |& grep "+++ exited with" | awk '{print $4}'` #Exit Code: 0=OK 1=Error
+                                        if [ $deleted -eq "0" ]; then
+                                                echo "[INFO] $i deleted successfully."
+                                        elif [ $deleted -eq "1" ]; then
+                                                echo "[WARN] $i not deleted. Possibly file locked."
+                                        else
+                                                echo "[ERROR] $i had an unexpected error."
+                                        fi
+                        else
+                                if [[ ! " ${array[*]} " =~ " ${deletedFile} " ]]; then
+                                echo "[INFO] $torrentPath/$i/ doesnt exist."
+                                fi
+                        fi
                 else
-                echo "[WARN] $torrentPath/$i/ will be deleted (TEST :: DELETE MANUALLY)"
+                        if [ -d "$torrentPath/$i" ]; then
+                                echo "[WARN] $i exists but script is in INFO only mode"
+                        else
+                                echo "[INFO] $i was found in the qBitTorrent log but no longer exists in $torrentPath"
+                        fi
                 fi
-        done
-fi
+done
