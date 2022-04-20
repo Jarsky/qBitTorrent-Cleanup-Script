@@ -4,10 +4,12 @@
 deleteFiles="false"
 torrentPath=/path/to/downloads
 qBitTorrentLogPath=/opt/appdata/qbittorrent/config/qBittorrent/logs
-LogPath=/var/log/qBitTorrent-Cleanup.log
+LogPath=/var/log
 dependencyCheck="true"
 
 #Functions
+qBTlog=qbittorrent.log
+qBTClean=qBitTorrent-Cleanup.log
 function fCheckOS() {
         if [ -f /etc/lsb-release ]; then
             . /etc/lsb-release
@@ -62,17 +64,25 @@ fCheckOS;
 fDependencies;
 fi
 
-if [ ! -f "$qBitTorrentLogPath/qbittorrent.log" ]; then
-        echo -e "[WARN] Cannot find qbittorrent.log. Check your Log Path"
+if [ ! -f "$qBitTorrentLogPath/$qBTlog" ]; then
+        echo -e "[WARN] Cannot find $qBTlog. Check the path to your qBitTorrent Logs."
+        exit 1
+        elif [ ! -r "$qBitTorrentLogPath/$qBTlog" ]; then
+        echo -e "[WARN] Cannot read from $qBTlog. Check permissions."
+        exit 1
+        elif [ ! -f "$LogPath/$qBTClean" ]; then
+                touch $LogPath/$qBTClean
+        elif [ ! -w "$LogPath/$qBTClean" ]; then
+        echo -e "[WARN] Cannot write to $LogPath/$qBTClean . Check permissions."
         exit 1
 fi
 
 dateFormat="%Y-%m-%dT%H:%M:%S"
-exec 1>> >(ts '['$dateFormat']' >> "$LogPath") 2>&1
-files=`cat $qBitTorrentLogPath/qbittorrent.log | grep "Error: Directory not empty" | awk '{ print $4 }' | tr -s "\'" ' '`
+exec 1>> >(ts '['$dateFormat']' >> "$LogPath/$qBTClean") 2>&1
+files=`cat $qBitTorrentLogPath/$qBTlog | grep "Error: Directory not empty" | awk '{ print $4 }' | tr -s "\'" ' '`
 array=($files)
 
-doesntexist=`cat $LogPath | grep "doesnt exist" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
+doesntexist=`cat $LogPath/$qBTClean | grep "[FLCK]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
 deletedFile=($doesntexist)
 
 for i in "${array[@]}";
@@ -90,7 +100,7 @@ for i in "${array[@]}";
                                         fi
                         else
                                 if [[ ! " ${array[*]} " =~ " ${deletedFile} " ]]; then
-                                echo "[INFO] $torrentPath/$i/ doesnt exist."
+                                echo "[FLCK] $torrentPath/$i/ doesnt exist."
                                 fi
                         fi
                 else
