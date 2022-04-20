@@ -16,6 +16,9 @@ If you're using other tools such as Sonarr, Radarr, Lidarr, etc...which automati
 
 This script will scrub the qBitTorrent log and delete leftover files.
 
+![image](https://user-images.githubusercontent.com/839416/164169490-057b945a-fc38-4c4b-9388-901f31dec32c.png)
+
+
 Usage
 --------------
 
