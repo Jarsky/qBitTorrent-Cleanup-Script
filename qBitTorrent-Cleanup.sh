@@ -82,7 +82,7 @@ exec 1>> >(ts '['$dateFormat']' >> "$LogPath/$qBTClean") 2>&1
 files=`cat $qBitTorrentLogPath/$qBTlog | grep "Error: Directory not empty" | awk '{ print $4 }' | tr -s "\'" ' '`
 array=($files)
 
-doesntexist=`cat $LogPath/$qBTClean | grep "[FLCK]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
+doesntexist=`cat $LogPath/$qBTClean | grep "\[FLCK\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
 deletedFile=($doesntexist)
 
 for i in "${array[@]}";
