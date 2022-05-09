@@ -1,5 +1,17 @@
 #!/bin/bash
-
+#########################################################
+#                                                       #
+#               qBitTorrent-Cleanup script              #
+#                                                       #
+#        Written by Jarsky ||  Updated 10/05/2022       #
+#                                                       #
+#   Clean up files not deleted properly by qBittorrent  #
+#              if they have been unpacked               #
+#                                                       #
+# https://github.com/Jarsky/qBitTorrent-Cleanup-Script  #
+#                                                       #
+#########################################################
+#
 #Config
 deleteFiles="false"
 torrentPath=/path/to/downloads
