@@ -85,6 +85,9 @@ qBTappArray=($qBTappLog)
 #Array lists files already cleaned up
 qBTcleanLog=`cat $LogPath/$qBTClean | grep "\[FLCK\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed "s/\/$//"`
 qBTcleanArray=($qBTcleanLog)
+#Test array
+qBTtestLog=`cat $LogPath/$qBTClean | grep "\[TEST\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed "s/\/$//"`
+qBTtestArray=($qBTtestLog)
 
 for i in "${qBTappArray[@]}";
         do
@@ -105,10 +108,12 @@ for i in "${qBTappArray[@]}";
                                 fi
                         fi
                 else
+                                if [[ ! " ${qBTtestArray[*]} " =~ " ${qBTcleanArray[*]} " ]]; then
                         if [ -d "$torrentPath/$i" ]; then
-                                echo "[WARN] $i exists but script is in INFO only mode"
+                                echo "[TEST] $i exists but is INFO only mode"
                         else
-                                echo "[INFO] $i was found in the qBitTorrent log but no longer exists in $torrentPath"
+                                echo "[TEST] $i doesnt exist in: $torrentPath"
                         fi
                 fi
+        fi
 done
