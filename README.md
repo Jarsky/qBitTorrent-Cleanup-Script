@@ -42,5 +42,5 @@ e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron 
 Known Issues
 ---------------
 
-Sometimes the log gets spammed for some reason. 
+Sometimes the log gets spammed for some reason.   
 Delete qBittorrent-Cleanup.log and it should behave itself properly again.
