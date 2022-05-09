@@ -42,6 +42,5 @@ e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron 
 Known Issues
 ---------------
 
-If you have run the script in Test mode, no files will be deleted that have existing log entries. You will have to delete these manually or delete the log file and run again in delete mode.
-
-Delete qBittorrent-Cleanup.log and change deleteFiles="true"
+Sometimes the log gets spammed for some reason. 
+Delete qBittorrent-Cleanup.log and it should behave itself properly again.
