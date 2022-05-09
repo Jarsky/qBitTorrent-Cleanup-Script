@@ -6,10 +6,10 @@ torrentPath=/path/to/downloads
 qBitTorrentLogPath=/opt/appdata/qbittorrent/config/qBittorrent/logs
 LogPath=/var/log
 dependencyCheck="true"
-
-#Functions
 qBTlog=qbittorrent.log
 qBTClean=qBitTorrent-Cleanup.log
+
+#Functions
 function fCheckOS() {
         if [ -f /etc/lsb-release ]; then
             . /etc/lsb-release
@@ -79,13 +79,14 @@ fi
 
 dateFormat="%Y-%m-%dT%H:%M:%S"
 exec 1>> >(ts '['$dateFormat']' >> "$LogPath/$qBTClean") 2>&1
-files=`cat $qBitTorrentLogPath/$qBTlog | grep "Error: Directory not empty" | awk '{ print $4 }' | tr -s "\'" ' '`
-array=($files)
+#Array lists releases not deleted properly
+qBTappLog=`cat $qBitTorrentLogPath/$qBTlog | grep "Error: Directory not empty" | awk '{ print $4 }' | sed "s/^'//;s/'$//"`
+qBTappArray=($qBTappLog)
+#Array lists files already cleaned up
+qBTcleanLog=`cat $LogPath/$qBTClean | grep "\[FLCK\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed "s/\/$//"`
+qBTcleanArray=($qBTcleanLog)
 
-doesntexist=`cat $LogPath/$qBTClean | grep "\[FLCK\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed 's/.$//'`
-deletedFile=($doesntexist)
-
-for i in "${array[@]}";
+for i in "${qBTappArray[@]}";
         do
                 if [ $deleteFiles = "true" ]; then
                         if [ -d "$torrentPath/$i" ]; then
@@ -99,7 +100,7 @@ for i in "${array[@]}";
                                                 echo "[ERROR] $i had an unexpected error."
                                         fi
                         else
-                                if [[ ! " ${array[*]} " =~ " ${deletedFile} " ]]; then
+                                if [[ ! " ${qBTappArray[*]} " =~ " ${qBTcleanArray[*]} " ]]; then
                                 echo "[FLCK] $torrentPath/$i/ doesnt exist."
                                 fi
                         fi
