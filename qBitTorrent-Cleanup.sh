@@ -23,7 +23,7 @@ dateFormat=$(date -u +"[%Y-%m-%dT%H:%M:%S]")
 
 # Check for log files
 if [ ! -f "$qBitTorrentLogPath/$qBTlog" ]; then
-  echo "[WARN] Cannot find $qBTlog. Check the path to your qBitTorrent Logs."
+  echo "[WARN] Cannot find $qBTlog. Check the path to your qBitTorrent Logs." 
   exit 1
 elif [ ! -r "$qBitTorrentLogPath/$qBTlog" ]; then
   echo "[WARN] Cannot read from $qBTlog. Check permissions."
@@ -45,21 +45,21 @@ while IFS= read -r folder; do
   else
     if [ $deleteFiles = "true" ]; then
       if [ -d "$torrentPath/$folder" ]; then
-        echo "$dateFormat [INFO] Deleting $torrentPath/$folder"
+        echo "$dateFormat [INFO] Deleting $torrentPath/$folder" >> "$logPath/$qBTClean"
         rm -r "$torrentPath/$folder"
         if [ $? -eq 0 ]; then
           echo "$dateFormat [INFO] $folder deleted successfully." >> "$logPath/$qBTClean"
         else
-          echo "$dateFormat [WARN] $folder not deleted. Possibly file locked."
+          echo "$dateFormat [WARN] $folder not deleted. Possibly file locked." >> "$logPath/$qBTClean"
         fi
       else
-        echo "$dateFormat [FLCK] $torrentPath/$folder does not exist."
+        echo "$dateFormat [FLCK] $torrentPath/$folder does not exist." >> "$logPath/$qBTClean"
       fi
     else
       if [ -d "$torrentPath/$folder" ]; then
-        echo "$dateFormat [TEST] $folder exists but is INFO only mode"
+        echo "$dateFormat [TEST] $folder exists but is INFO only mode" >> "$logPath/$qBTClean"
       else
-        echo "$dateFormat [TEST] $folder does not exist in: $torrentPath"
+        echo "$dateFormat [TEST] $folder does not exist in: $torrentPath" >> "$logPath/$qBTClean"
       fi
     fi
   fi
