@@ -23,9 +23,8 @@ Usage
 --------------
 
 1. Download the script.
-2. Install TS (apt install moreutils)
-3. Set your paths in the configuration
-4. Setup a cronjob to automate this script
+2. Set your paths in the configuration
+3. Setup a cronjob to automate this script
 <br />
 e.g to set a cronjob as root run <code>sudo crontab -e</code> and create a cron entry
 <br /><br />
