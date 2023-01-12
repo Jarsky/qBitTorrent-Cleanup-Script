@@ -48,8 +48,7 @@ while IFS= read -r folder; do
         echo "$dateFormat [INFO] Deleting $torrentPath/$folder"
         rm -r "$torrentPath/$folder"
         if [ $? -eq 0 ]; then
-          echo "$dateFormat [INFO] $folder deleted successfully."
-          echo "$dateFormat [FLCK] $folder" >> "$logPath/$qBTClean"
+          echo "$dateFormat [INFO] $folder deleted successfully." >> "$logPath/$qBTClean"
         else
           echo "$dateFormat [WARN] $folder not deleted. Possibly file locked."
         fi
