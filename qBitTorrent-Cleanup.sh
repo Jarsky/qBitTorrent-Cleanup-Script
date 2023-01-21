@@ -37,7 +37,7 @@ qbtcliSettings=~/.qbt/settings.json
 #######################################################
 
 Name=qBitTorrent-Cleanup
-version=1.5
+version=1.6
 
 dateFormat() {
     date +"[%Y-%m-%d %H:%M:%S]"
@@ -154,10 +154,10 @@ function jqCheck() {
 
 function checkLogStatus() {
         if [ ! -f "$qBitTorrentLog" ]; then
-                echo -e "$(dateFormat) ${WARN} Cannot find $qBTlog. Check the path to your qBitTorrent Logs." | tee -a "$logFile"
+                echo -e "$(dateFormat) ${WARN} Cannot find $qBitTorrentLog. Check the path to your qBitTorrent Logs." | tee -a "$logFile"
                 exit 1
         elif [ ! -r "$qBitTorrentLog" ]; then
-                echo -e "$(dateFormat) ${WARN} Cannot read from $qBTlog. Check permissions." | tee -a "$logFile"
+                echo -e "$(dateFormat) ${WARN} Cannot read from $qBitTorrentLog. Check permissions." | tee -a "$logFile"
                 exit 1
         elif [ ! -f "$logFile" ]; then
                 touch $logFile
