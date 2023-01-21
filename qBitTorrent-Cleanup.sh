@@ -3,8 +3,8 @@
 #
 #       qBitTorrent-Cleanup by Jarsky
 #
-#       Updated:  21/01/2023
-#       Version:  v1.5
+#       Updated:  22/01/2023
+#       Version:  v1.6
 #
 #       Summary:
 #           This script is intended for qBitTorrent 4.5+
@@ -58,7 +58,7 @@ fi
 ERROR="${RED}[ERROR]${RESET}"
 WARN="${YEL}[WARN]${RESET}"
 INFO="${TEAL}[INFO]${RESET}"
-TEST="${MAGENTA}[INFO]${RESET}"
+TEST="${MAGENTA}[TEST]${RESET}"
 
 #Functions
 function checkOS() {
@@ -132,9 +132,9 @@ function versionCMD(){
         echo -e "${TEAL}$Name${RESET} | ${YEL}Version:${RESET} $version | ${RED}Repo:${RESET} https://github.com/Jarsky/qBitTorrent-Cleanup-Script
 
         ${MAGENTA}Author${RESET}: Jarsky
+        ${MAGENTA}Update 1.6${RESET}: Fixed logic in the 'legacy' code
         ${MAGENTA}Update 1.5${RESET}: Moved original logic into 'legacy' mode, in favor of qBitTorrent-CLI comparison
-        ${MAGENTA}Update 1.4${RESET}: Refactored code and added functions
-        ${MAGENTA}Update 1.3${RESET}: Changed logging so doesnt require package"
+        ${MAGENTA}Update 1.4${RESET}: Refactored code and added functions"
         echo -e ""
 }
 
@@ -174,9 +174,6 @@ function buildArrays() {
         #Array lists files already cleaned up
         qBTcleanLog=`cat $logFile | grep "\[FLCK\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed "s/\/$//"`
         qBTcleanArray=($qBTcleanLog)
-        #Test array
-        qBTtestLog=`cat $logFile | grep "\[TEST\]" | awk '{ print $3 }' | sed -r 's:^'$torrentPath'/::' | sed "s/\/$//"`
-        qBTtestArray=($qBTtestLog)
 }
 
 ### CRON functions
@@ -263,52 +260,45 @@ if [[ $1 == "-h" || $1 == "--help" ]]; then
             confirmCronJob
             removeCronJob
         fi
-
 elif [[ $1 == "-legacy" ]]; then
+    # Initialize
+    checkLogStatus
+    buildArrays
 
-        # Initialize
-        checkLogStatus
-        buildArrays
-
-        for qbitLogName in "${qBTappArray[@]}";
-        do
-                if [[ $2 == "test" || $2 == "-test" ]]; then
-                        if [[ ! " ${qBTtestArray[*]} " =~ " ${qBTcleanArray[*]} " ]]; then
-                                if [ -d "$torrentPath/$qbitLogName" ]; then
-                                        if ! grep -q -E "\\[TEST\\].*$torrentName.*$" $logFile; then
-                                                echo -e "$(dateFormat) ${TEST} $qbitLogName exists but is INFO only mode"  | tee -a "$logFile"
-                                        else
-                                                echo -e "$(dateFormat) ${TEST} $qbitLogName doesnt exist in: $torrentPath"  | tee -a "$logFile"
-                                        fi
-                                else
-                                        echo -e "$(dateFormat) ${TEST} $torrentPath/$qbitLogName has already been deleted"
-                        fi
-                elif ! grep -q -E "\\[FLCK\\].*$torrentName.*$" $logFile; then
-                                echo -e "$(dateFormat) [FLCK] $torrentPath/$qbitLogName/ doesnt exist."  | tee -a "$logFile"
-                        else
-                                echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName/ already exists in the log"
-                        fi
-                else
-                        if [ -d "$torrentPath/$qbitLogName" ]; then
-                                echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName/ will be deleted"  | tee -a "$logFile"
-                                deleted=`strace rm -r $torrentPath/$qbitLogName/ |& grep "+++ exited with" | awk '{print $4}'` #Exit Code: 0=OK 1=Error
-                                        if [ $deleted -eq "0" ]; then
-                                                echo -e "$(dateFormat) ${INFO} $qbitLogName deleted successfully."  | tee -a "$logFile"
-                                        elif [ $deleted -eq "1" ]; then
-                                                echo -e "$(dateFormat) ${WARN} $qbitLogName not deleted. Possibly file locked."  | tee -a "$logFile"
-                                        else
-                                                echo -e "$(dateFormat) ${ERROR} $qbitLogName had an unexpected error."  | tee -a "$logFile"
-                                        fi
-                        else
-                                echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName has already been deleted."
-                        fi
-                fi
-        done
-
-
+    for qbitLogName in "${qBTappArray[@]}";
+    do
+        if [[ $2 == "test" || $2 == "-test" ]]; then
+            if [ -d "$torrentPath/$qbitLogName" ]; then
+                echo -e "$(dateFormat) ${TEST} $qbitLogName exists but is INFO only mode" | tee -a "$logFile"
+            else
+                echo -e "$(dateFormat) ${TEST} $torrentPath/$qbitLogName has already been deleted" | tee -a "$logFile"
+            fi
+            continue
+        fi
+        if ! grep -q -E "\\[FLCK\\].*$torrentName.*$" $logFile; then
+            echo -e "$(dateFormat) [FLCK] $torrentPath/$qbitLogName/ doesnt exist." | tee -a "$logFile"
+        else
+            echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName/ already exists in the log"
+        fi
+        if [ -d "$torrentPath/$qbitLogName" ]; then
+            echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName/ will be deleted" | tee -a "$logFile"
+            deleted=`strace rm -r $torrentPath/$qbitLogName/ |& grep "+++ exited with" | awk '{print $4}'` #Exit Code: 0=OK 1=Error
+            if [ $deleted -eq "0" ]; then
+                echo -e "$(dateFormat) ${INFO} $qbitLogName deleted successfully." | tee -a "$logFile"
+            elif [ $deleted -eq "1" ]; then
+                echo -e "$(dateFormat) ${WARN} $qbitLogName not deleted. Possibly file locked." | tee -a "$logFile"
+            else
+                echo -e "$(dateFormat) ${ERROR} $qbitLogName had an unexpected error." | tee -a "$logFile"
+            fi
+        elif ! grep -q -E "\\[INFO\\].*$torrentName.*$" $logFile; then
+            echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName has already been deleted." | tee -a "$logFile"
+        else
+            echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName has already been deleted and logged"
+        fi
+    done
 elif [[ $1 == "run" ||$1 == "-run" ]]; then
 
-    
+
         # Initialize
         checkLogStatus
         buildArrays
