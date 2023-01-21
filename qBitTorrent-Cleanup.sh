@@ -273,16 +273,20 @@ elif [[ $1 == "-legacy" ]]; then
         for qbitLogName in "${qBTappArray[@]}";
         do
                 if [[ $2 == "test" || $2 == "-test" ]]; then
-                        if ! grep -q -E "\\[FLCK\\].*$torrentName.*$" $logFile; then
+                        if [[ ! " ${qBTtestArray[*]} " =~ " ${qBTcleanArray[*]} " ]]; then
+                                if [ -d "$torrentPath/$qbitLogName" ]; then
+                                        if ! grep -q -E "\\[TEST\\].*$torrentName.*$" $logFile; then
+                                                echo -e "$(dateFormat) ${TEST} $qbitLogName exists but is INFO only mode"  | tee -a "$logFile"
+                                        else
+                                                echo -e "$(dateFormat) ${TEST} $qbitLogName doesnt exist in: $torrentPath"  | tee -a "$logFile"
+                                        fi
+                                else
+                                        echo -e "$(dateFormat) ${TEST} $torrentPath/$qbitLogName has already been deleted"
+                        fi
+                elif ! grep -q -E "\\[FLCK\\].*$torrentName.*$" $logFile; then
                                 echo -e "$(dateFormat) [FLCK] $torrentPath/$qbitLogName/ doesnt exist."  | tee -a "$logFile"
                         else
                                 echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName/ already exists in the log"
-                        fi
-                elif [[ ! " ${qBTtestArray[*]} " =~ " ${qBTcleanArray[*]} " ]]; then
-                        if [ -d "$torrentPath/$qbitLogName" ]; then
-                                echo -e "$(dateFormat) ${TEST} $qbitLogName exists but is INFO only mode"  | tee -a "$logFile"
-                        else
-                                echo -e "$(dateFormat) ${TEST} $qbitLogName doesnt exist in: $torrentPath"  | tee -a "$logFile"
                         fi
                 else
                         if [ -d "$torrentPath/$qbitLogName" ]; then
@@ -296,10 +300,11 @@ elif [[ $1 == "-legacy" ]]; then
                                                 echo -e "$(dateFormat) ${ERROR} $qbitLogName had an unexpected error."  | tee -a "$logFile"
                                         fi
                         else
-                                echo -e "$(dateFormat) ${INFO} No torrents found to delete."
+                                echo -e "$(dateFormat) ${INFO} $torrentPath/$qbitLogName has already been deleted."
                         fi
                 fi
         done
+
 
 elif [[ $1 == "run" ||$1 == "-run" ]]; then
 
@@ -315,3 +320,7 @@ elif [[ $1 == "run" ||$1 == "-run" ]]; then
         echo -e "$(dateFormat) ${ERROR} Use $0 --help for more commands"
 
 fi
+
+
+
+
