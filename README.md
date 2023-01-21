@@ -49,14 +49,17 @@ Usage
 Edit the path to your downloads and qbittorrent.log in the script
 
 `./qBitTorrent-Cleanup.sh --help` for supported commands
+
 ![image](https://user-images.githubusercontent.com/839416/213888478-98a670c2-a7c4-4832-b269-b6145d8b6929.png)
 
 
 `./qBitTorrent-Cleanup.sh -legacy test` for log only (no deletion)
+
 ![image](https://user-images.githubusercontent.com/839416/213888450-af1fed66-2287-4a39-8f40-87b657ac5c54.png)
 
 
 `./qBitTorrent-Cleanup.sh -legacy`
+
 ![image](https://user-images.githubusercontent.com/839416/213888378-cdc0f7ac-85b6-4913-a458-add55c50337a.png)
 
 
@@ -66,6 +69,7 @@ Edit the path to your downloads and qbittorrent.log in the script
   
 qBt-mover can setup CRON for you.  
 Simply run `./qBitTorrent-Cleanup.sh -cron` which will give you the commands. 
+
 ![image](https://user-images.githubusercontent.com/839416/213888507-b6a4818d-1ab4-4c57-bc29-3cbd196ad441.png)
 
 
