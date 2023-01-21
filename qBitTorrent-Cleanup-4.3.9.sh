@@ -9,7 +9,8 @@
 #              if they have been unpacked               
 #                                                       
 # https://github.com/Jarsky/qBitTorrent-Cleanup-Script  
-#                                                       
+#                          
+# NOTE: This will not work on 4.5.0
 ###############################################################
 #
 # Config
