@@ -46,8 +46,19 @@ Usage
 
 ### General
 <br />
-Run `./qBitTorrent-Cleanup.sh` it will guide you
-Use `./qBitTorrent-Cleanup.sh --help` for supported commands
+Edit the path to your downloads and qbittorrent.log in the script
+
+`./qBitTorrent-Cleanup.sh --help` for supported commands
+![image](https://user-images.githubusercontent.com/839416/213888478-98a670c2-a7c4-4832-b269-b6145d8b6929.png)
+
+
+`./qBitTorrent-Cleanup.sh -legacy test` for log only (no deletion)
+![image](https://user-images.githubusercontent.com/839416/213888450-af1fed66-2287-4a39-8f40-87b657ac5c54.png)
+
+
+`./qBitTorrent-Cleanup.sh -legacy`
+![image](https://user-images.githubusercontent.com/839416/213888378-cdc0f7ac-85b6-4913-a458-add55c50337a.png)
+
 
 
 
@@ -55,9 +66,12 @@ Use `./qBitTorrent-Cleanup.sh --help` for supported commands
   
 qBt-mover can setup CRON for you.  
 Simply run `./qBitTorrent-Cleanup.sh -cron` which will give you the commands. 
+![image](https://user-images.githubusercontent.com/839416/213888507-b6a4818d-1ab4-4c57-bc29-3cbd196ad441.png)
 
 
 Setting up the default using **./qBitTorrent-Cleanup.sh -cron legacy** looks like below
+
+![image](https://user-images.githubusercontent.com/839416/213888525-36a4b908-ddbf-4ad3-a489-8d31201f698e.png)
 
 ```bash
 ## qBitTorrent-Cleanup cron
@@ -70,6 +84,8 @@ If you want to remove the CRON entries just use
 ```bash
 ./qBitTorrent-Cleanup.sh -cron remove
 ```
+![image](https://user-images.githubusercontent.com/839416/213888542-52335bc1-2b2f-42f7-9a31-7e24b8325df9.png)
+
 
 ### LOGGING
 
