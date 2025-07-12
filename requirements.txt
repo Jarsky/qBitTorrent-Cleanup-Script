@@ -1,0 +1,2 @@
+qbittorrent-api==2025.5.0
+python-dotenv>=0.20.0 

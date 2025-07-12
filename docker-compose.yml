@@ -1,0 +1,10 @@
+services:
+  qbittorrent-cleanup:
+    build: .
+    container_name: qbittorrent-cleanup
+    volumes:
+      - ./logs:/logs
+      - /path/to/qbittorrent/downloads:/downloads  # Map your qBitTorrent download directory
+    env_file:
+      - .env
+    restart: unless-stopped 
